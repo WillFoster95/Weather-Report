@@ -9,9 +9,9 @@ const api_key = apikey;
 
 const getRawLocationData = async () => {
     try{
-        const response = await fetch(url);
+        const response = await fetch(url + '?key=' + api_key);
         if (response.ok){
-          const jsonResponse = await response.json(url + '?key=' + api_key);
+          const jsonResponse = await response.json();
           console.log(jsonResponse);
 
           testParagraph.innerHTML = JSON.stringify(jsonResponse);
@@ -23,7 +23,6 @@ const getRawLocationData = async () => {
       catch(error){
         console.log(error);    
       }
-
 }
 
 searchButton.addEventListener('click', getRawLocationData);
