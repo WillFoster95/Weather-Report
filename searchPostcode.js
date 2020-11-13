@@ -2,20 +2,20 @@ import apikey from './apikey.js';
 
 const searchButton = document.querySelector('#searchButton');
 const searchInputField = document.querySelector('#searchInputField');
+const testParagraph = document.querySelector('#testParagraph');
+const url = 'http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/sitelist?key=';
 
-const ulr = 'http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/sitelist';
 const api_key = apikey;
 
-searchButton.addEventListener('click', seachLocations);
-
-const searchLocations = async (searchInputField) => {
+const getRawLocationData = async () => {
     try{
-        const response = await fetch('');
+        const response = await fetch(url);
         if (response.ok){
-          const jsonResponse = await response.json();
-          //console.log(jsonResponse);
-          //firstParagraph.innerHTML = JSON.stringify(jsonResponse.Locations.Location);
-          //formatOutput(jsonResponse);
+          const jsonResponse = await response.json(url + '?key=' + api_key);
+          console.log(jsonResponse);
+
+          testParagraph.innerHTML = JSON.stringify(jsonResponse);
+       
           return;
         }
         throw new Error('Request failed!')
@@ -26,3 +26,4 @@ const searchLocations = async (searchInputField) => {
 
 }
 
+searchButton.addEventListener('click', getRawLocationData);
