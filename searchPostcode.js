@@ -3,30 +3,34 @@ import apikey from './apikey.js';
 const searchButton = document.querySelector('#searchButton');
 const searchInputField = document.querySelector('#searchInputField');
 const testParagraph = document.querySelector('#testParagraph');
-const url = 'http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/sitelist?key=';
+const url_sitelist = 'http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/sitelist?key=';
+const url_forcasts = 'http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/';
 
 const api_key = apikey;
 
 const getRawLocationData = async () => {
     try{
-        const response = await fetch(url + api_key);
-        if (response.ok){
-          const jsonResponse = await response.json();
-          const locationsArray = jsonResponse.Locations.Location
-          //console.log(jsonResponse);
-          let locationIndex = findLocationIndex(locationsArray);   
-          console.log(locationIndex);
+      console.log(url_sitelist + api_key);      
+      const response = await fetch(url_sitelist + api_key);
+      if (response.ok){
+        const jsonResponse = await response.json();
+        const locationsArray = jsonResponse.Locations.Location
+        let locationIndex = findLocationIndex(locationsArray);   
+        let locationID = locationsArray[locationIndex].id;
+        const locationForcasts = await fetchLocationForcastsByID(locationID);
+        testParagraph.innerHTML = JSON.stringify(locationForcasts);
 
-          testParagraph.innerHTML = JSON.stringify(locationsArray[locationIndex]);
-
-          //testParagraph.innerHTML = JSON.stringify(jsonResponse.Locations.Location);       
-          return;
-        }
-        throw new Error('Request failed!')
+        //testParagraph.innerHTML = locationID;
+        //console.log(locationIndex);
+        //testParagraph.innerHTML = JSON.stringify(locationsArray[locationIndex]);
+        //testParagraph.innerHTML = JSON.stringify(jsonResponse.Locations.Location);       
+        return;
       }
-      catch(error){
-        console.log(error);    
-      }
+      throw new Error('Request failed!')
+    }
+    catch(error){
+      console.log(error);    
+    }
 }
 
 const findLocationIndex = (locationArray) => {
@@ -36,6 +40,22 @@ const findLocationIndex = (locationArray) => {
     }
   }
   return "place not found";
+}
+
+const fetchLocationForcastsByID = async (locationID) => {
+  try{
+    console.log(url_forcasts + locationID + '?res=1hourly&key=' + api_key); 
+    const response = await fetch(url_forcasts + locationID + '?res=3hourly&key=' + api_key);
+    if (response.ok){
+      const jsonResponse = await response.json();
+      return jsonResponse;
+    }
+    throw new Error('Request failed!')
+  }
+  catch(error){
+    console.log(error);    
+  }
+
 }
 
 searchButton.addEventListener('click', getRawLocationData);
