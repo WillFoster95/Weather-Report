@@ -9,13 +9,17 @@ const api_key = apikey;
 
 const getRawLocationData = async () => {
     try{
-        const response = await fetch(url + '?key=' + api_key);
+        const response = await fetch(url + api_key);
         if (response.ok){
           const jsonResponse = await response.json();
-          console.log(jsonResponse);
+          const locationsArray = jsonResponse.Locations.Location
+          //console.log(jsonResponse);
+          let locationIndex = findLocationIndex(locationsArray);   
+          console.log(locationIndex);
 
-          testParagraph.innerHTML = JSON.stringify(jsonResponse);
-       
+          testParagraph.innerHTML = JSON.stringify(locationsArray[locationIndex]);
+
+          //testParagraph.innerHTML = JSON.stringify(jsonResponse.Locations.Location);       
           return;
         }
         throw new Error('Request failed!')
@@ -23,6 +27,15 @@ const getRawLocationData = async () => {
       catch(error){
         console.log(error);    
       }
+}
+
+const findLocationIndex = (locationArray) => {
+  for(let i = 0; i<locationArray.length; i++){
+    if(locationArray[i].name == searchInputField.value){      
+      return i;
+    }
+  }
+  return "place not found";
 }
 
 searchButton.addEventListener('click', getRawLocationData);
