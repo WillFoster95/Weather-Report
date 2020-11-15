@@ -8,23 +8,29 @@ const url_forcasts = 'http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/al
 
 const api_key = apikey;
 
-const getRawLocationData = async () => {
+const searchButtonPressed = async () => {
+  let rawLocationData = await fetchRawLocationData();
+  let locationsArray = rawLocationData.Locations.Location
+  let locationIndex = findLocationIndex(locationsArray);   
+  let locationID = locationsArray[locationIndex].id;
+  let locationForcasts = await fetchLocationForcastsByID(locationID);
+
+  testParagraph.innerHTML = JSON.stringify(locationForcasts);
+
+  //testParagraph.innerHTML = locationID;
+  //console.log(locationIndex);
+  //testParagraph.innerHTML = JSON.stringify(locationsArray[locationIndex]);
+  //testParagraph.innerHTML = JSON.stringify(jsonResponse.Locations.Location);
+}
+
+const fetchRawLocationData = async () => {
     try{
       console.log(url_sitelist + api_key);      
       const response = await fetch(url_sitelist + api_key);
       if (response.ok){
         const jsonResponse = await response.json();
-        const locationsArray = jsonResponse.Locations.Location
-        let locationIndex = findLocationIndex(locationsArray);   
-        let locationID = locationsArray[locationIndex].id;
-        const locationForcasts = await fetchLocationForcastsByID(locationID);
-        testParagraph.innerHTML = JSON.stringify(locationForcasts);
-
-        //testParagraph.innerHTML = locationID;
-        //console.log(locationIndex);
-        //testParagraph.innerHTML = JSON.stringify(locationsArray[locationIndex]);
-        //testParagraph.innerHTML = JSON.stringify(jsonResponse.Locations.Location);       
-        return;
+               
+        return jsonResponse;
       }
       throw new Error('Request failed!')
     }
@@ -58,4 +64,4 @@ const fetchLocationForcastsByID = async (locationID) => {
 
 }
 
-searchButton.addEventListener('click', getRawLocationData);
+searchButton.addEventListener('click', searchButtonPressed);
