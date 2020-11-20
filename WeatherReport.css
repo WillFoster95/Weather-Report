@@ -1,6 +1,27 @@
-h1 {
-    font-size: large;
+strong {
+    color: green;
 }
-button{
-    size: 100px 100px
+
+.container {
+    max-width: 1000px;
+    background-color: aqua;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;  
+    column-gap: 10px ; 
+}
+
+.forcast {
+    background-color: honeydew;
+    display: grid;
+    
+}
+
+.forcast.today {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+.title {
+    grid-column-start: 1;
+    grid-column-end: 3;       
 }

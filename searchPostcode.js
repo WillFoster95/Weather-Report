@@ -50,7 +50,7 @@ const findLocationIndex = (locationArray) => {
 
 const fetchLocationForcastsByID = async (locationID) => {
   try{
-    console.log(url_forcasts + locationID + '?res=1hourly&key=' + api_key); 
+    //console.log(url_forcasts + locationID + '?res=3hourly&key=' + api_key); 
     const response = await fetch(url_forcasts + locationID + '?res=3hourly&key=' + api_key);
     if (response.ok){
       const jsonResponse = await response.json();
