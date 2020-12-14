@@ -1,35 +1,46 @@
 import apikey from './apikey.js';
 import ccapikey from './apikey.js';
 
+/*
 const searchButton = document.querySelector('#searchButton');
+const searchCoordinates = document.querySelector('#searchCoordinates');
 const searchInputField = document.querySelector('#searchInputField');
 const testParagraph = document.querySelector('#testParagraph');
 const latValue = document.querySelector("#searchLat");
 const lonValue = document.querySelector("#searchLong");
+*/
 
 //urls for climacell
-const url_CCforcast = 'https://api.climacell.co/v3/weather/forecast/daily';
 const url_CClat = '?lat=';
 const url_CClon = '&lon=';
+
+//Next 5 days
+const url_CCNext5 = 'https://api.climacell.co/v3/weather/forecast/daily';
 const url_CCdefaultTest = '&unit_system=si&start_time=now&fields=precipitation&apikey='
 
+//apikey
 const CCAPI_key = ccapikey;
-
-//urls for DataPoint
-const url_sitelist = 'http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/sitelist?key=';
-const url_forcasts = 'http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/';
-
-const api_key = apikey;
 
 //for climacell API using long and lat
 const searchCoordinatesButtonPressed = async () => {
+  let Next5Data = await fetchNext5DaysForcast();
+  //let Last5Data = await fetchNext5DaysForcast();
+  //testParagraph.innerHTML = JSON.stringify(Next5Data);
+
+  RD1.innerHTML = Next5Data[1].precipitation[0].max.value
+  RD2.innerHTML = Next5Data[2].precipitation[0].max.value
+  RD3.innerHTML = Next5Data[3].precipitation[0].max.value
+  RD4.innerHTML = Next5Data[4].precipitation[0].max.value
+  RD5.innerHTML = Next5Data[5].precipitation[0].max.value
+
+}
+
+const fetchNext5DaysForcast = async () => {
   try{        
-    const response = await fetch(url_CCforcast + url_CClat + latValue.value + url_CClon + lonValue.value + url_CCdefaultTest + CCAPI_key);
+    const response = await fetch(url_CCNext5 + url_CClat + searchLat.value + url_CClon + searchLong.value + url_CCdefaultTest + CCAPI_key);
     if (response.ok){
-      const jsonResponse = await response.json();
-      testParagraph.innerHTML = JSON.stringify(jsonResponse);
-             
-      //return jsonResponse;
+      const jsonResponse = await response.json();                 
+      return jsonResponse;
     }
     throw new Error('Request failed!')
   }
@@ -38,6 +49,20 @@ const searchCoordinatesButtonPressed = async () => {
   }
 }
 
+const fetchLast5DaysForcast = async () => {
+
+}
+
+//For hourly forcast 
+const fetchTodaysForcast = async () => {
+
+}
+
+//urls for DataPoint
+const url_sitelist = 'http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/sitelist?key=';
+const url_forcasts = 'http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/';
+
+const api_key = apikey;
 
 //For Data Point API using place name (most of the code below here may not be used as ClimaCell seems better than DataPoint)
 const searchButtonPressed = async () => {
