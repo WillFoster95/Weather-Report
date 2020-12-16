@@ -51,9 +51,14 @@ const searchCoordinatesButtonPressed = async () => {
   WH0.innerHTML = Math.round(TodayData[0].wind_speed.value *10)/10;
   WGH0.innerHTML = Math.round(TodayData[0].wind_gust.value *10)/10;
 
+  RH1.innerHTML = Math.round(TodayData[1].precipitation.value *  100)/100;
+  TH1.innerHTML = Math.round(TodayData[1].temp.value * 10)/10;
+  WH1.innerHTML = Math.round(TodayData[1].wind_speed.value *10)/10;
+  WGH1.innerHTML = Math.round(TodayData[1].wind_gust.value *10)/10;
+
   var endTime = new Date();
   var exeTime = endTime.getTime() - startTime.getTime();
-  testParagraph.innerHTML = exeTime;
+  testParagraph.innerHTML = exeTime + "ms";
 
 }
 
