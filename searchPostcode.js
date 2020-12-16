@@ -28,25 +28,44 @@ const CCAPI_key = ccapikey;
 //for climacell API using long and lat
 const searchCoordinatesButtonPressed = async () => {
   var startTime = new Date();
-  let Next5Data = await fetchNext5DaysForcast();          //Could be done in parallel
-  let TodayData = await fetchTodaysForcast();             //to reduce exection time
+  const Next5Data = fetchNext5DaysForcast();          //Could be done in parallel
+  const TodayData = fetchTodaysForcast();             //to reduce exection time
   //let Last5Data = await fetchLast5DaysForcast();
-  //testParagraph.innerHTML = JSON.stringify(Next5Data);
+  //await Next5Data;
+  //await TodayData;
+  
   
   //Today
-  RD0.innerHTML = Math.round(Next5Data[0].precipitation_accumulation.value *  100)/100; 
-  TD0.innerHTML = Math.round(Next5Data[0].temp[0].min.value * 10)/10 + " - " + Math.round(Next5Data[0].temp[1].max.value * 10)/10;
-  WD0.innerHTML = Math.round(Next5Data[0].wind_speed[0].min.value * 10)/10 + " - " + Math.round(Next5Data[0].wind_speed[1].max.value * 10)/10;
+  displayTodayForcast(await Next5Data);
   
   //Next 5 days
-  RD1.innerHTML = Math.round(Next5Data[1].precipitation_accumulation.value *  100)/100;
-  RD2.innerHTML = Math.round(Next5Data[2].precipitation_accumulation.value *  100)/100;
-  RD3.innerHTML = Math.round(Next5Data[3].precipitation_accumulation.value *  100)/100;
-  RD4.innerHTML = Math.round(Next5Data[4].precipitation_accumulation.value *  100)/100;
-  RD5.innerHTML = Math.round(Next5Data[5].precipitation_accumulation.value *  100)/100;
+  displayNext5Forcast(await Next5Data);
 
   //Hourly
-  RH0.innerHTML = Math.round(TodayData[0].precipitation.value *  100)/100;
+  displayHourlyForcast(await TodayData);
+
+  var endTime = new Date();
+  var exeTime = endTime.getTime() - startTime.getTime();
+  testParagraph.innerHTML = exeTime + "ms";
+
+}
+
+const displayNext5Forcast = (Next5Data) => {
+  RD1.innerHTML = Math.round(Next5Data[1].precipitation_accumulation.value * 100)/100;
+  RD2.innerHTML = Math.round(Next5Data[2].precipitation_accumulation.value * 100)/100;
+  RD3.innerHTML = Math.round(Next5Data[3].precipitation_accumulation.value * 100)/100;
+  RD4.innerHTML = Math.round(Next5Data[4].precipitation_accumulation.value * 100)/100;
+  RD5.innerHTML = Math.round(Next5Data[5].precipitation_accumulation.value * 100)/100;
+}
+
+const displayTodayForcast = (Next5Data) => {
+  RD0.innerHTML = Math.round(Next5Data[0].precipitation_accumulation.value * 100)/100; 
+  TD0.innerHTML = Math.round(Next5Data[0].temp[0].min.value * 10)/10 + " - " + Math.round(Next5Data[0].temp[1].max.value * 10)/10;
+  WD0.innerHTML = Math.round(Next5Data[0].wind_speed[0].min.value * 10)/10 + " - " + Math.round(Next5Data[0].wind_speed[1].max.value * 10)/10;
+}
+
+const displayHourlyForcast = (TodayData) => {
+  RH0.innerHTML = Math.round(TodayData[0].precipitation.value * 100)/100;
   TH0.innerHTML = Math.round(TodayData[0].temp.value * 10)/10;
   WH0.innerHTML = Math.round(TodayData[0].wind_speed.value *10)/10;
   WGH0.innerHTML = Math.round(TodayData[0].wind_gust.value *10)/10;
@@ -55,10 +74,6 @@ const searchCoordinatesButtonPressed = async () => {
   TH1.innerHTML = Math.round(TodayData[1].temp.value * 10)/10;
   WH1.innerHTML = Math.round(TodayData[1].wind_speed.value *10)/10;
   WGH1.innerHTML = Math.round(TodayData[1].wind_gust.value *10)/10;
-
-  var endTime = new Date();
-  var exeTime = endTime.getTime() - startTime.getTime();
-  testParagraph.innerHTML = exeTime + "ms";
 
 }
 
@@ -87,8 +102,7 @@ const fetchTodaysForcast = async () => {
   try{        
     const response = await fetch(url_HourlyStart + url_CClat + searchLat.value + url_CClon + searchLong.value + url_HourlyEnd + CCAPI_key);
     if (response.ok){
-      const jsonResponse = await response.json();
-      console.log(jsonResponse);                 
+      const jsonResponse = await response.json();              
       return jsonResponse;
     }
     throw new Error('Request failed!')
@@ -98,6 +112,9 @@ const fetchTodaysForcast = async () => {
   }
 }
 
+searchCoordinates.addEventListener('click', searchCoordinatesButtonPressed);
+
+/*
 //urls for DataPoint
 const url_sitelist = 'http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/sitelist?key=';
 const url_forcasts = 'http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/';
@@ -165,4 +182,4 @@ const fetchLocationForcastsByID = async (locationID) => {
 }
 
 searchButton.addEventListener('click', searchButtonPressed);
-searchCoordinates.addEventListener('click', searchCoordinatesButtonPressed);
+*/
