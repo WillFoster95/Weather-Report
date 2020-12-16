@@ -29,11 +29,11 @@ const searchCoordinatesButtonPressed = async () => {
 
   RD0.innerHTML = Math.round(Next5Data[0].precipitation_accumulation.value *  100)/100;
   
-  TD0.innerHTML = Next5Data[0].temp[0].min.value + " - " + Next5Data[0].temp[1].max.value;
-  WD0.innerHTML = Next5Data[0].wind_speed[0].min.value + " - " + Next5Data[0].wind_speed[1].max.value;
+  TD0.innerHTML = Math.round(Next5Data[0].temp[0].min.value * 10)/10 + " - " + Math.round(Next5Data[0].temp[1].max.value * 10)/10;
+  WD0.innerHTML = Math.round(Next5Data[0].wind_speed[0].min.value * 10)/10 + " - " + Math.round(Next5Data[0].wind_speed[1].max.value * 10)/10;
+  
 
   RD1.innerHTML = Math.round(Next5Data[1].precipitation_accumulation.value *  100)/100;
-  
   RD2.innerHTML = Math.round(Next5Data[2].precipitation_accumulation.value *  100)/100;
   RD3.innerHTML = Math.round(Next5Data[3].precipitation_accumulation.value *  100)/100;
   RD4.innerHTML = Math.round(Next5Data[4].precipitation_accumulation.value *  100)/100;

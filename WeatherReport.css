@@ -3,17 +3,20 @@ strong {
 }
 
 .container {
-    max-width: 1500px;
-    background-color: aqua;
+    
+    background-color: #a7c5eb;
     display: grid;
-    grid-template-columns: 0.5fr 1fr 3fr;  
-    column-gap: 10px ; 
+    grid-template-columns: 0.5fr 1fr 3fr;
+    grid-template-rows: 1fr 1fr;
+    column-gap: 10px;
+    row-gap: 10px; 
 }
 
 .forcast {
-    background-color: honeydew;
+    background-color: #f6ecf0;
     display: grid;
-    
+    column-gap: 1px;
+    row-gap: 1px;
 }
 
 .forcast.today {
@@ -32,6 +35,16 @@ strong {
     grid-template-rows: 1fr 1fr;
 }
 
+.forcast.hourly {
+    grid-template-columns: repeat(24, 1fr);
+    grid-template-rows: 0.1fr 1fr;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    
+    display: grid;
+}
+
+
 .title  {
     max-height: 20px;
 }
@@ -46,3 +59,11 @@ strong {
     grid-column-end: 6; 
 }
 
+.title.hourly {
+    grid-column-start: 1;
+    grid-column-end: 25; 
+}
+
+.hours {
+    background-color: #949cdf;
+}
