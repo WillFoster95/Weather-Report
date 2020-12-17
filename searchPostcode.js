@@ -28,8 +28,8 @@ const CCAPI_key = ccapikey;
 //for climacell API using long and lat
 const searchCoordinatesButtonPressed = async () => {
   var startTime = new Date();
-  const Next5Data = fetchNext5DaysForcast();          //Could be done in parallel
-  const TodayData = fetchTodaysForcast();             //to reduce exection time
+  const Next5Data = fetchNext5DaysForcast();          
+  const TodayData = fetchTodaysForcast();             
   //let Last5Data = await fetchLast5DaysForcast();
   //await Next5Data;
   //await TodayData;
@@ -74,6 +74,31 @@ const displayHourlyForcast = (TodayData) => {
   TH1.innerHTML = Math.round(TodayData[1].temp.value * 10)/10;
   WH1.innerHTML = Math.round(TodayData[1].wind_speed.value *10)/10;
   WGH1.innerHTML = Math.round(TodayData[1].wind_gust.value *10)/10;
+
+  RH2.innerHTML = Math.round(TodayData[2].precipitation.value *  100)/100;
+  TH2.innerHTML = Math.round(TodayData[2].temp.value * 10)/10;
+  WH2.innerHTML = Math.round(TodayData[2].wind_speed.value *10)/10;
+  WGH2.innerHTML = Math.round(TodayData[2].wind_gust.value *10)/10;
+
+  RH3.innerHTML = Math.round(TodayData[3].precipitation.value *  100)/100;
+  TH3.innerHTML = Math.round(TodayData[3].temp.value * 10)/10;
+  WH3.innerHTML = Math.round(TodayData[3].wind_speed.value *10)/10;
+  WGH3.innerHTML = Math.round(TodayData[3].wind_gust.value *10)/10;
+
+  RH4.innerHTML = Math.round(TodayData[4].precipitation.value *  100)/100;
+  TH4.innerHTML = Math.round(TodayData[4].temp.value * 10)/10;
+  WH4.innerHTML = Math.round(TodayData[4].wind_speed.value *10)/10;
+  WGH4.innerHTML = Math.round(TodayData[4].wind_gust.value *10)/10;
+
+  RH5.innerHTML = Math.round(TodayData[5].precipitation.value *  100)/100;
+  TH5.innerHTML = Math.round(TodayData[5].temp.value * 10)/10;
+  WH5.innerHTML = Math.round(TodayData[5].wind_speed.value *10)/10;
+  WGH5.innerHTML = Math.round(TodayData[5].wind_gust.value *10)/10;
+
+  RH6.innerHTML = Math.round(TodayData[6].precipitation.value *  100)/100;
+  TH6.innerHTML = Math.round(TodayData[6].temp.value * 10)/10;
+  WH6.innerHTML = Math.round(TodayData[6].wind_speed.value *10)/10;
+  WGH6.innerHTML = Math.round(TodayData[6].wind_gust.value *10)/10;
 
 }
 

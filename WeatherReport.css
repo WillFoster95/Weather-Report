@@ -51,7 +51,7 @@ p {
 }
 
 .forcast.hourly {
-    grid-template-columns: repeat(9, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     grid-template-rows: 0.1fr 1fr;
     grid-column-start: 1;
     grid-column-end: 4;
@@ -77,14 +77,14 @@ p {
 
 .title.hourly {
     grid-column-start: 1;
-    grid-column-end: 25; 
+    grid-column-end: 8; 
 }
 
 .hours {
     background-color: #949cdf;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 0.5fr 1fr 1fr;
+    grid-template-columns: 0.5fr 1fr;
+    grid-template-rows: 0.5fr 1fr 1fr 1fr 1fr;
     justify-content: center;
     align-content: center;
 }
