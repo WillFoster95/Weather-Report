@@ -106,7 +106,7 @@ const displayHourlyForcast = (TodayData) => {
 //specifying an end time and not calling temp and wind speed when not required
 const fetchNext5DaysForcast = async () => {
   try{        
-    const response = await fetch(url_Next5Start + url_CClat + searchLat.value + url_CClon + searchLong.value + url_Next5End + CCAPI_key);
+    const response = await fetch("https://nrv9wuyj48.execute-api.us-east-1.amazonaws.com/default/Weather_Report_Backend");
     if (response.ok){
       const jsonResponse = await response.json();                 
       return jsonResponse;
