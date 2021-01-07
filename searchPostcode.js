@@ -1,4 +1,4 @@
-import ccapikey from './apikey.js';
+//import ccapikey from './apikey.js';
 //import React from 'react';
 
 //urls for climacell
@@ -14,13 +14,13 @@ const url_HourlyStart = "https://api.climacell.co/v3/weather/forecast/hourly"
 const url_HourlyEnd = "&unit_system=si&start_time=now&fields=precipitation%2Ctemp%2Cwind_speed%2Cwind_gust&apikey="
 
 //apikey
-const CCAPI_key = ccapikey;
+//const CCAPI_key = ccapikey;
 
 //for climacell API using long and lat
 const searchCoordinatesButtonPressed = async () => {
   var startTime = new Date();
   const Next5Data = fetchNext5DaysForcast();          
-  const TodayData = fetchTodaysForcast();             
+  //const TodayData = fetchTodaysForcast();             
   //let Last5Data = await fetchLast5DaysForcast();
   //await Next5Data;
   //await TodayData;
@@ -33,7 +33,7 @@ const searchCoordinatesButtonPressed = async () => {
   displayNext5Forcast(await Next5Data);
 
   //Hourly
-  displayHourlyForcast(await TodayData);
+  //displayHourlyForcast(await TodayData);
 
   var endTime = new Date();
   var exeTime = endTime.getTime() - startTime.getTime();
@@ -93,8 +93,7 @@ const displayHourlyForcast = (TodayData) => {
 
 }
 
-//The bandwidth used by this function can be reduced by 
-//specifying an end time and not calling temp and wind speed when not required
+
 const fetchNext5DaysForcast = async () => {
   try{        
     const response = await fetch("https://nrv9wuyj48.execute-api.us-east-1.amazonaws.com/default/Weather_Report_Backend");
@@ -110,13 +109,14 @@ const fetchNext5DaysForcast = async () => {
 }
 
 const fetchLast5DaysForcast = async () => {
+  
 
 }
 
 //For hourly forcast 
 const fetchTodaysForcast = async () => {
   try{        
-    const response = await fetch(url_HourlyStart + url_CClat + searchLat.value + url_CClon + searchLong.value + url_HourlyEnd + CCAPI_key);
+    const response = await fetch("https://nrv9wuyj48.execute-api.us-east-1.amazonaws.com/default/Weather_Report_Backend");
     if (response.ok){
       const jsonResponse = await response.json();              
       return jsonResponse;
@@ -127,6 +127,8 @@ const fetchTodaysForcast = async () => {
     console.log(error);    
   }
 }
+
+
 
 //Testing react element
 'use strict';
@@ -144,10 +146,10 @@ class LikeButton extends React.Component {
       return 'You liked this.';
     }
 
-    return e(
-      'button',
-      { onClick: () => this.setState({ liked: true }) },
-      'Like'
+    return (
+      <button onClick={() => this.setState({ liked: true })}>
+        Like
+      </button>
     );
   }
 }
@@ -155,6 +157,11 @@ class LikeButton extends React.Component {
 const domContainer = document.querySelector('#test_React_container');
 ReactDOM.render(e(LikeButton), domContainer);
 //end of testing react element
+
+
+
+
+
 
 
 searchCoordinates.addEventListener('click', searchCoordinatesButtonPressed);
