@@ -1,11 +1,11 @@
-
-
-//for climacell API using long and lat
+var tempRain = 0;
 const searchCoordinatesButtonPressed = async () => {
   var startTime = new Date();
-  const Next5Data = fetchNext5DaysForcast();          
+  const Next5Data = await fetchNext5DaysForcast();          
   //const TodayData = fetchTodaysForcast();             
-  //let Last5Data = await fetchLast5DaysForcast();  
+  //let Last5Data = await fetchLast5DaysForcast(); 
+  
+  tempRain = Next5Data[1].precipitation_accumulation.value;
   
   //Today
   displayTodayForcast(await Next5Data);
@@ -111,39 +111,39 @@ const fetchTodaysForcast = async () => {
 
 
 
+
+
 //Testing react element
-'use strict';
-
+//'use strict';
 const e = React.createElement;
-
 class LikeButton extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { liked: false };
   }
 
   render() {
-    if (this.state.liked) {
-      return 'You liked this.';
-    }
-
-    return (
-      <button onClick={() => this.setState({ liked: true })}>
-        Like
-      </button>
-    );
+    return(
+    <HourlyInfo 
+      rain={tempRain}
+    />
+    )
   }
 }
-
 const domContainer = document.querySelector('#test_React_container');
 ReactDOM.render(e(LikeButton), domContainer);
 //end of testing react element
 
+function HourlyInfo(props) {
+  return (
+    <div className="hours">
+      <h3>{props.time}</h3>
+      <img src="./images/Rain.jpg" alt="Rain"/><p><strong>{props.rain}</strong> mm</p>
+      <img src="./images/Temp.jpg" alt="Temp"/><p><strong>{props.temp}</strong> °C</p>
+      <img src="./images/Wind.jpg" alt="Rain"/><p><strong>{props.wind}</strong> m/s</p>
+      <img src="./images/Wind.jpg" alt="Rain"/><p><strong>{props.windG}</strong> m/s</p>
+    </div>
+  );
 
-
-
-
-
+}
 
 searchCoordinates.addEventListener('click', searchCoordinatesButtonPressed);
-
