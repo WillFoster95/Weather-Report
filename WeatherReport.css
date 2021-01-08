@@ -54,11 +54,11 @@ p {
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: 0.1fr 1fr;
     grid-column-start: 1;
-    grid-column-end: 4;
-    
-    display: grid;
-    
+    grid-column-end: 4;    
+    display: grid;  
 }
+
+
 
 
 .title  {

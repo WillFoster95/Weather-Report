@@ -1,12 +1,10 @@
-var tempRain = 0;
+
 const searchCoordinatesButtonPressed = async () => {
   var startTime = new Date();
   const Next5Data = await fetchNext5DaysForcast();          
   //const TodayData = fetchTodaysForcast();             
   //let Last5Data = await fetchLast5DaysForcast(); 
-  
-  tempRain = Next5Data[1].precipitation_accumulation.value;
-  
+
   //Today
   displayTodayForcast(await Next5Data);
   
@@ -74,7 +72,6 @@ const displayHourlyForcast = (TodayData) => {
 
 }
 
-
 const fetchNext5DaysForcast = async () => {
   try{        
     const response = await fetch("https://nrv9wuyj48.execute-api.us-east-1.amazonaws.com/default/Weather_Report_Backend?lat=" + searchLat.value + "&lon=" + searchLong.value);
@@ -91,13 +88,12 @@ const fetchNext5DaysForcast = async () => {
 
 const fetchLast5DaysForcast = async () => {
   
-
 }
 
 //For hourly forcast 
 const fetchTodaysForcast = async () => {
   try{        
-    const response = await fetch("https://nrv9wuyj48.execute-api.us-east-1.amazonaws.com/default/Weather_Report_Backend");
+    const response = await fetch("https://nrv9wuyj48.execute-api.us-east-1.amazonaws.com/default/Weather_Report_Backend?lat=54&lon=-1.55");
     if (response.ok){
       const jsonResponse = await response.json();              
       return jsonResponse;
@@ -111,27 +107,77 @@ const fetchTodaysForcast = async () => {
 
 
 
-
-
-//Testing react element
 //'use strict';
 const e = React.createElement;
-class LikeButton extends React.Component {
+
+class App extends React.Component {
   constructor(props) {
     super(props);
-  }
+    this.state = {
+        rain: Array(7).fill("rain"),
+        temp: Array(7).fill("temp"),
+        wind: Array(7).fill("wind"),
+        windG: Array(7).fill("windG"),
+        time: Array(7).fill("time")
+      }
+    };
+  
 
+  async clickHandler() {
+    const tempData = await fetchTodaysForcast(); //add actually get hourly data for this!!
+    const rainArray = this.state.rain.slice();
+    const tempArray = this.state.temp.slice();
+    const windArray = this.state.wind.slice();
+    const windGArray = this.state.windG.slice();
+    const timeArray = this.state.time.slice();
+    
+    //test changes
+    rainArray[0] = Math.round(tempData[1].precipitation_accumulation.value * 100)/100;
+    tempArray[1] = 7;
+    windArray[0] = 5;
+    windGArray[1] = 10;
+    timeArray[0] = "13:00";
+    //end of test changes
+
+    this.setState({
+      rain: rainArray,
+      temp: tempArray,
+      wind: windArray,
+      windG: windGArray,
+      time: timeArray
+    });
+  }
+  
   render() {
+    
+    var hourContainers = [];
+    
+    for(var i = 0; i < 7; i++)
+    {
+      hourContainers.push(
+        <HourlyInfo 
+          rain={this.state.rain[i]}
+          temp={this.state.temp[i]}
+          wind={this.state.wind[i]}
+          windG={this.state.windG[i]}
+          time={this.state.time[i]}
+        />
+      )
+    }   
+    
     return(
-    <HourlyInfo 
-      rain={tempRain}
-    />
-    )
+      <div>
+        <SearchButton 
+          onClick={() => this.clickHandler()}    
+        />
+        {hourContainers}
+      </div>
+    );
   }
 }
 const domContainer = document.querySelector('#test_React_container');
-ReactDOM.render(e(LikeButton), domContainer);
-//end of testing react element
+ReactDOM.render(e(App), domContainer);
+
 
 function HourlyInfo(props) {
   return (
@@ -139,11 +185,25 @@ function HourlyInfo(props) {
       <h3>{props.time}</h3>
       <img src="./images/Rain.jpg" alt="Rain"/><p><strong>{props.rain}</strong> mm</p>
       <img src="./images/Temp.jpg" alt="Temp"/><p><strong>{props.temp}</strong> °C</p>
-      <img src="./images/Wind.jpg" alt="Rain"/><p><strong>{props.wind}</strong> m/s</p>
-      <img src="./images/Wind.jpg" alt="Rain"/><p><strong>{props.windG}</strong> m/s</p>
+      <img src="./images/Wind.jpg" alt="Wind"/><p><strong>{props.wind}</strong> m/s</p>
+      <img src="./images/Wind.jpg" alt="Wind Gust"/><p><strong>{props.windG}</strong> m/s</p>
     </div>
   );
-
 }
+
+function SearchButton(props) {
+  return(
+    <button className="searchButton" onClick={props.onClick}>
+      Search
+    </button>
+  )
+}
+/*
+function InputField(props) {
+  return(
+    <input type="text"> {props.default}</input>
+  )
+}
+*/
 
 searchCoordinates.addEventListener('click', searchCoordinatesButtonPressed);
