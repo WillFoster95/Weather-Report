@@ -166,7 +166,7 @@ class App extends React.Component {
     }   
     
     return(
-      <div>
+      <div id="React_container">
         <SearchButton 
           onClick={() => this.clickHandler()}    
         />
