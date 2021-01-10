@@ -66,6 +66,11 @@ p {
     display: grid;  
 }
 
+#test_React_container{
+    grid-column-start: 1;
+    grid-column-end: 8; 
+}
+
 .searchButton {
     grid-column-start: 1;
     grid-column-end: 8; 

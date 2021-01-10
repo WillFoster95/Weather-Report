@@ -1,8 +1,7 @@
 
 const searchCoordinatesButtonPressed = async () => {
   var startTime = new Date();
-  const Next5Data = await fetchNext5DaysForcast();          
-  //const TodayData = fetchTodaysForcast();             
+  const Next5Data = await fetchNext5DaysForcast();                     
   //let Last5Data = await fetchLast5DaysForcast(); 
 
   //Today
@@ -10,9 +9,6 @@ const searchCoordinatesButtonPressed = async () => {
   
   //Next 5 days
   displayNext5Forcast(await Next5Data);
-
-  //Hourly
-  //displayHourlyForcast(await TodayData);
 
   var endTime = new Date();
   var exeTime = endTime.getTime() - startTime.getTime();
@@ -34,47 +30,10 @@ const displayTodayForcast = (Next5Data) => {
   WD0.innerHTML = Math.round(Next5Data[0].wind_speed[0].min.value * 10)/10 + " - " + Math.round(Next5Data[0].wind_speed[1].max.value * 10)/10;
 }
 
-const displayHourlyForcast = (TodayData) => {
-  RH0.innerHTML = Math.round(TodayData[0].precipitation.value * 100)/100;
-  TH0.innerHTML = Math.round(TodayData[0].temp.value * 10)/10;
-  WH0.innerHTML = Math.round(TodayData[0].wind_speed.value *10)/10;
-  WGH0.innerHTML = Math.round(TodayData[0].wind_gust.value *10)/10;
-
-  RH1.innerHTML = Math.round(TodayData[1].precipitation.value *  100)/100;
-  TH1.innerHTML = Math.round(TodayData[1].temp.value * 10)/10;
-  WH1.innerHTML = Math.round(TodayData[1].wind_speed.value *10)/10;
-  WGH1.innerHTML = Math.round(TodayData[1].wind_gust.value *10)/10;
-
-  RH2.innerHTML = Math.round(TodayData[2].precipitation.value *  100)/100;
-  TH2.innerHTML = Math.round(TodayData[2].temp.value * 10)/10;
-  WH2.innerHTML = Math.round(TodayData[2].wind_speed.value *10)/10;
-  WGH2.innerHTML = Math.round(TodayData[2].wind_gust.value *10)/10;
-
-  RH3.innerHTML = Math.round(TodayData[3].precipitation.value *  100)/100;
-  TH3.innerHTML = Math.round(TodayData[3].temp.value * 10)/10;
-  WH3.innerHTML = Math.round(TodayData[3].wind_speed.value *10)/10;
-  WGH3.innerHTML = Math.round(TodayData[3].wind_gust.value *10)/10;
-
-  RH4.innerHTML = Math.round(TodayData[4].precipitation.value *  100)/100;
-  TH4.innerHTML = Math.round(TodayData[4].temp.value * 10)/10;
-  WH4.innerHTML = Math.round(TodayData[4].wind_speed.value *10)/10;
-  WGH4.innerHTML = Math.round(TodayData[4].wind_gust.value *10)/10;
-
-  RH5.innerHTML = Math.round(TodayData[5].precipitation.value *  100)/100;
-  TH5.innerHTML = Math.round(TodayData[5].temp.value * 10)/10;
-  WH5.innerHTML = Math.round(TodayData[5].wind_speed.value *10)/10;
-  WGH5.innerHTML = Math.round(TodayData[5].wind_gust.value *10)/10;
-
-  RH6.innerHTML = Math.round(TodayData[6].precipitation.value *  100)/100;
-  TH6.innerHTML = Math.round(TodayData[6].temp.value * 10)/10;
-  WH6.innerHTML = Math.round(TodayData[6].wind_speed.value *10)/10;
-  WGH6.innerHTML = Math.round(TodayData[6].wind_gust.value *10)/10;
-
-}
 
 const fetchNext5DaysForcast = async () => {
   try{        
-    const response = await fetch("https://nrv9wuyj48.execute-api.us-east-1.amazonaws.com/default/Weather_Report_Backend?lat=" + searchLat.value + "&lon=" + searchLong.value);
+    const response = await fetch("https://nrv9wuyj48.execute-api.us-east-1.amazonaws.com/default/Weather_Report_Backend?lat=" + searchLat.value + "&lon=" + searchLong.value + "&forcast_type=daily");
     if (response.ok){
       const jsonResponse = await response.json();                 
       return jsonResponse;
@@ -93,7 +52,7 @@ const fetchLast5DaysForcast = async () => {
 //For hourly forcast 
 const fetchTodaysForcast = async () => {
   try{        
-    const response = await fetch("https://nrv9wuyj48.execute-api.us-east-1.amazonaws.com/default/Weather_Report_Backend?lat=54&lon=-1.55");
+    const response = await fetch("https://nrv9wuyj48.execute-api.us-east-1.amazonaws.com/default/Weather_Report_Backend?lat=" + searchLat.value + "&lon=" + searchLong.value + "&forcast_type=hourly");
     if (response.ok){
       const jsonResponse = await response.json();              
       return jsonResponse;
@@ -131,13 +90,24 @@ class App extends React.Component {
     const windGArray = this.state.windG.slice();
     const timeArray = this.state.time.slice();
     
-    //test changes
-    rainArray[0] = Math.round(tempData[1].precipitation_accumulation.value * 100)/100;
+    /*
+    test changes
+    rainArray[0] = Math.round(tempData[1].precipitation.value * 100)/100;
     tempArray[1] = 7;
     windArray[0] = 5;
     windGArray[1] = 10;
     timeArray[0] = "13:00";
-    //end of test changes
+    end of test changes
+    */
+
+    for(var i = 0; i < 7; i++)
+    {
+      rainArray[i] = Math.round(tempData[i].precipitation.value * 100)/100;
+      tempArray[i] = Math.round(tempData[i].temp.value * 10)/10;
+      windArray[i] = Math.round(tempData[i].wind_speed.value *10)/10;
+      //WGH0.innerHTML = Math.round(TodayData[0].wind_gust.value *10)/10;
+
+    }
 
     this.setState({
       rain: rainArray,
