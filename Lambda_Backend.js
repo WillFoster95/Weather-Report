@@ -4,6 +4,7 @@ exports.handler = async (event) =>
 {
   let dataString = '';
   const apiKey = process.env.apiKey;
+  const apiKeyPast = process.env.apiKeyPast;
   const lat = event.queryStringParameters.lat;
   const lon = event.queryStringParameters.lon;
   const forcast_type = event.queryStringParameters.forcast_type;
@@ -57,6 +58,31 @@ exports.handler = async (event) =>
         });
       });
     });      
+  }
+
+  else if (forcast_type == "past")
+  {
+    response = await new Promise((resolve, reject) => {
+      const req = https.get("" + apiKeyPast, function(res) {    //add use of openweather/onecall api
+        res.on('data', chunk => {
+          dataString += chunk;
+        });
+
+        res.on('end', () => {
+          resolve({
+            statusCode: 200,
+            body: JSON.stringify(JSON.parse(dataString))
+          });
+        });
+      });
+          
+      req.on('error', (e) => {
+        reject({
+          statusCode: 500,
+          body: 'Something went wrong!'
+        });
+      });
+    });
   }
 
   return response;
